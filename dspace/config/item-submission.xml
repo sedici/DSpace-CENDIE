@@ -167,7 +167,7 @@
         </step-definition>
 
         <!-- This optional step may allow the user to select a Creative Commons license -->
-        <step-definition id="cclicense" mandatory="false">
+        <step-definition id="cclicense" mandatory="true">
             <heading>submit.progressbar.CClicense</heading>
             <processing-class>org.dspace.app.rest.submit.step.CCLicenseStep</processing-class>
 	        <type>cclicense</type>
@@ -283,7 +283,7 @@
             <!--<step id="identifiers"/>-->
             <!--Step will be to Describe the item. -->
             <step id="traditionalpageone"/>
-            <step id="traditionalpagetwo"/>
+            <!-- <step id="traditionalpagetwo"/> -->
 
             <!-- Uncomment this step to allow the user to embargo or access restrict the entire item -->
             <!-- <step id="itemAccessConditions"/> -->
@@ -305,10 +305,10 @@
             <!-- <step id="extractionstep"/> -->
 
             <!-- Uncomment this step to allow the user to select a Creative Commons License -->
-            <!-- <step id="cclicense"/> -->
+            <step id="cclicense"/>
 
             <!--Step will be to Sign off on the required DSpace License agreement -->
-            <step id="license"/>
+            <!-- <step id="license"/> -->
         </submission-process>
 
         <!--
