@@ -272,7 +272,7 @@
             <!-- Materia -->
             <row>
                 <field>
-                    <dc-schema>dc</dc-schema>
+                    <dc-schema>cendie</dc-schema>
                     <dc-element>subject</dc-element>
                     <dc-qualifier>materia</dc-qualifier>
                     <repeatable>true</repeatable>
