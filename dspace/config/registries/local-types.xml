@@ -10,19 +10,52 @@
 <dspace-dc-types>
 
   <dspace-header>
-    <title>Registry of instance-specific metadata fields</title>
-    <contributor.author>Ivan Mas&#xE1;r</contributor.author>
-    <contributor.editor>$Author$</contributor.editor>
-    <date.created>$Date$</date.created>
-    <description>$Log$</description>
-    <description.version>$Revision$</description.version>
-  </dspace-header>
+		<title>Metadatos - CENDIE 2025</title>
+		<contributor.author>CENDIE Team</contributor.author>
+	</dspace-header>
 
-  <dc-schema>
-    <name>local</name>
-    <namespace>http://dspace.org/namespace/local/</namespace>
-  </dc-schema>
+  <!-- Schemas -->
+	<dc-schema>
+		<name>cendie</name>
+		<namespace>https://abc.gob.ar/namespace/cendie</namespace>
+	</dc-schema>
 
+  <dc-type>
+    <schema>cendie</schema>
+    <element>type</element>
+    <scope_note>Tipo (específico) del documento</scope_note>
+  </dc-type>
+  <dc-type>
+    <schema>cendie</schema>
+    <element>subject</element>
+    <qualifier>materia</qualifier>
+    <scope_note>Materia asociada al documento</scope_note>
+  </dc-type>
+  <dc-type>
+    <schema>cendie</schema>
+    <element>contributor</element>
+    <qualifier>corporate</qualifier>
+    <scope_note>Autor (institución) del documento</scope_note>
+  </dc-type>
+  <dc-type>
+    <schema>cendie</schema>
+    <element>contributor</element>
+    <qualifier>gobernador</qualifier>
+    <scope_note></scope_note>
+  </dc-type>
+  <dc-type>
+    <schema>cendie</schema>
+    <element>contributor</element>
+    <qualifier>director</qualifier>
+    <scope_note></scope_note>
+  </dc-type>
+  <dc-type>
+    <schema>cendie</schema>
+    <element>identifier</element>
+    <qualifier>normativa</qualifier>
+    <scope_note></scope_note>
+  </dc-type>
+  
 <!--
   <dc-type>
     <schema>local</schema>
