@@ -279,7 +279,6 @@
                     <label>Materia</label>
                     <input-type>onebox</input-type>
                     <hint>Ingrese las materias que describen el contenido del recurso</hint>
-                    <required>Debe ingresar al menos una materia</required>
                 </field>
             </row>
 
