@@ -57,9 +57,27 @@
   </dc-type>
   <dc-type>
 		<schema>dc</schema>
+		<element>description</element>
+		<qualifier>note</qualifier>
+		<scope_note>Notas adicionales sobre el recurso</scope_note>
+	</dc-type>
+  <dc-type>
+		<schema>dc</schema>
+		<element>description</element>
+		<qualifier>filiation</qualifier>
+		<scope_note>Filiación institucional del autor</scope_note>
+	</dc-type>
+  <dc-type>
+		<schema>dc</schema>
 		<element>relation</element>
 		<qualifier>external</qualifier>
 		<scope_note>URL externa relacionada al documento</scope_note>
+	</dc-type>
+  <dc-type>
+		<schema>dc</schema>
+		<element>audience</element>
+		<qualifier>educationLevel</qualifier>
+		<scope_note>Nivel educativo al que está dirigido el recurso</scope_note>
 	</dc-type>
   
 <!--
