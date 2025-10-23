@@ -1860,52 +1860,52 @@
           -->
         <value-pairs value-pairs-name="common_iso_languages" dc-term="language_iso">
             <pair>
-                <displayed-value>N/A</displayed-value>
-                <stored-value></stored-value>
-            </pair>
-            <pair>
-                <displayed-value>English (United States)</displayed-value>
-                <stored-value>en_US</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>English</displayed-value>
-                <stored-value>en</stored-value>
-            </pair>
-            <pair>
-                <displayed-value>Spanish</displayed-value>
+                <displayed-value>Español</displayed-value>
                 <stored-value>es</stored-value>
             </pair>
             <pair>
-                <displayed-value>German</displayed-value>
+                <displayed-value>Inglés (Estados Unidos)</displayed-value>
+                <stored-value>en_US</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Inglés</displayed-value>
+                <stored-value>en</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Alemán</displayed-value>
                 <stored-value>de</stored-value>
             </pair>
             <pair>
-                <displayed-value>French</displayed-value>
+                <displayed-value>Francés</displayed-value>
                 <stored-value>fr</stored-value>
             </pair>
             <pair>
-                <displayed-value>Italian</displayed-value>
+                <displayed-value>Italiano</displayed-value>
                 <stored-value>it</stored-value>
             </pair>
             <pair>
-                <displayed-value>Japanese</displayed-value>
+                <displayed-value>Japonés</displayed-value>
                 <stored-value>ja</stored-value>
             </pair>
             <pair>
-                <displayed-value>Chinese</displayed-value>
+                <displayed-value>Chino</displayed-value>
                 <stored-value>zh</stored-value>
             </pair>
             <pair>
-                <displayed-value>Portuguese</displayed-value>
+                <displayed-value>Portugués</displayed-value>
                 <stored-value>pt</stored-value>
             </pair>
             <pair>
-                <displayed-value>Turkish</displayed-value>
+                <displayed-value>Turco</displayed-value>
                 <stored-value>tr</stored-value>
             </pair>
             <pair>
-                <displayed-value>(Other)</displayed-value>
+                <displayed-value>(Otro)</displayed-value>
                 <stored-value>other</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>No aplica</displayed-value>
+                <stored-value></stored-value>
             </pair>
         </value-pairs>
 
