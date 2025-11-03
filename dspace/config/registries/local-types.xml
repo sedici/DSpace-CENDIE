@@ -57,6 +57,12 @@
   </dc-type>
   <dc-type>
 		<schema>dc</schema>
+		<element>title</element>
+		<qualifier>subtitle</qualifier>
+		<scope_note>Subtítulo del recurso</scope_note>
+	</dc-type>
+  <dc-type>
+		<schema>dc</schema>
 		<element>description</element>
 		<qualifier>note</qualifier>
 		<scope_note>Notas adicionales sobre el recurso</scope_note>
