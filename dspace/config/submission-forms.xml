@@ -281,6 +281,20 @@
                 </field>
             </row>
 
+            <!-- Firmante -->
+            <row>
+				<field>
+					<dc-schema>cendie</dc-schema>
+					<dc-element>contributor</dc-element>
+					<dc-qualifier>inscriber</dc-qualifier>
+					<repeatable>true</repeatable>
+					<label>Firmantes</label>
+					<input-type>onebox</input-type>
+					<hint>Personas que firman la Normativa</hint>
+					<type-bind>Normativa</type-bind>
+				</field>
+            </row>
+
             <!-- Materia -->
             <row>
                 <field>
@@ -433,8 +447,34 @@
                     <label>Es parte de</label>
                     <input-type>onebox</input-type>
                     <hint>Ingrese el nombre de la publicación de la cual este recurso forma parte</hint>
-                    <type-bind>Publicación periódica</type-bind>
+                    <type-bind>Artículo, Publicación periódica</type-bind>
                 </field>
+            </row>
+
+            <!-- Alcance -->
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>coverage</dc-element>
+                    <repeatable>false</repeatable>
+                    <label>Alcance</label>
+                    <input-type>onebox</input-type>
+                    <hint>Ingrese el alcance del documento, como periodo, jurisdicción, etc.</hint>
+                    <type-bind>Normativa</type-bind>
+                </field>
+            </row>
+
+            <!-- Se relaciona con -->
+            <row>
+				<field>
+					<dc-schema>cendie</dc-schema>
+					<dc-element>relation</dc-element>
+					<dc-qualifier>isRelatedWith</dc-qualifier>
+					<repeatable>true</repeatable>
+					<label>Se relaciona con</label>
+					<input-type>onebox</input-type>
+					<hint>Link a un documento con el cual este documento está relacionado</hint>
+				</field>
             </row>
 
             <!-- URL externa -->
@@ -1766,12 +1806,76 @@
         <!-- Subtipos para Normativa -->
         <value-pairs value-pairs-name="common_subtypes_normativa" dc-term="type">
             <pair>
+                <displayed-value>Comunicación</displayed-value>
+                <stored-value>Comunicación</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Comunicación Conjunta</displayed-value>
+                <stored-value>Comunicación Conjunta</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Comunicación Parcial</displayed-value>
+                <stored-value>Comunicación Parcial</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>Circular</displayed-value>
                 <stored-value>Circular</stored-value>
             </pair>
             <pair>
-                <displayed-value>Comunicación</displayed-value>
-                <stored-value>Comunicación</stored-value>
+                <displayed-value>Circular Conjunta</displayed-value>
+                <stored-value>Circular Conjunta</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular General Conjunta</displayed-value>
+                <stored-value>Circular General Conjunta</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular General Técnica</displayed-value>
+                <stored-value>Circular General Técnica</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Administrativa</displayed-value>
+                <stored-value>Circular Administrativa</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Parcial</displayed-value>
+                <stored-value>Circular Parcial</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Parcial Conjunta</displayed-value>
+                <stored-value>Circular Parcial Conjunta</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Parcial Técnica</displayed-value>
+                <stored-value>Circular Parcial Técnica</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Técnica</displayed-value>
+                <stored-value>Circular Técnica</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Técnica Administrativa</displayed-value>
+                <stored-value>Circular Técnica Administrativa</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Técnica Conjunta</displayed-value>
+                <stored-value>Circular Técnica Conjunta</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Técnica General</displayed-value>
+                <stored-value>Circular Técnica General</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Circular Técnica Parcial</displayed-value>
+                <stored-value>Circular Técnica Parcial</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Convenio</displayed-value>
+                <stored-value>Convenio</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Decisión Administrativa</displayed-value>
+                <stored-value>Decisión Administrativa</stored-value>
             </pair>
             <pair>
                 <displayed-value>Decreto</displayed-value>
@@ -1782,12 +1886,44 @@
                 <stored-value>Disposición</stored-value>
             </pair>
             <pair>
+                <displayed-value>Disposición conjunta</displayed-value>
+                <stored-value>Disposición conjunta</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Directiva</displayed-value>
+                <stored-value>Directiva</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Memorándum</displayed-value>
+                <stored-value>Memorándum</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>Ley</displayed-value>
                 <stored-value>Ley</stored-value>
             </pair>
             <pair>
-                <displayed-value>Resolución</displayed-value>
-                <stored-value>Resolución</stored-value>
+                <displayed-value>Ordenanza Concejo Deliberante</displayed-value>
+                <stored-value>Ordenanza Concejo Deliberante</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Resolución Ministerial (Resolución)</displayed-value>
+                <stored-value>Resolución Ministerial (Resolución)</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Resolución Firma Conjunta</displayed-value>
+                <stored-value>Resolución Firma Conjunta</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Resolución Concejo Deliberante</displayed-value>
+                <stored-value>Resolución Concejo Deliberante</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Resolución del Consejo Federal de Cultura y Educación</displayed-value>
+                <stored-value>Resolución del Consejo Federal de Cultura y Educación</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Recomendación del Consejo Federal de Cultura y Educación</displayed-value>
+                <stored-value>Recomendación del Consejo Federal de Cultura y Educación</stored-value>
             </pair>
         </value-pairs>
         

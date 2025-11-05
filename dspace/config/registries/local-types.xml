@@ -34,6 +34,12 @@
   <dc-type>
     <schema>cendie</schema>
     <element>contributor</element>
+    <qualifier>inscriber</qualifier>
+    <scope_note>Firmantes</scope_note>
+  </dc-type>
+  <dc-type>
+    <schema>cendie</schema>
+    <element>contributor</element>
     <qualifier>corporate</qualifier>
     <scope_note>Autor (institución) del documento</scope_note>
   </dc-type>
@@ -72,6 +78,17 @@
 		<element>description</element>
 		<qualifier>filiation</qualifier>
 		<scope_note>Filiación institucional del autor</scope_note>
+	</dc-type>
+  <dc-type>
+		<schema>dc</schema>
+		<element>coverage</element>
+		<scope_note>Alcance</scope_note>
+	</dc-type>
+  <dc-type>
+		<schema>cendie</schema>
+		<element>relation</element>
+		<qualifier>isRelatedWith</qualifier>
+		<scope_note>URL de documentos relacionados</scope_note>
 	</dc-type>
   <dc-type>
 		<schema>dc</schema>
