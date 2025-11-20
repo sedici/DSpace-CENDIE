@@ -31,6 +31,7 @@
                 <ref bean="reviewstep"/>
                 <ref bean="editstep"/>
                 <ref bean="finaleditstep"/>
+                <ref bean="CENDIE-ADMIN_review"/>
             </util:list>
         </property>
     </bean>
@@ -64,7 +65,7 @@
         <property name="outcomes">
             <util:map>
                 <entry key="#{ T(org.dspace.xmlworkflow.state.actions.ActionResult).OUTCOME_COMPLETE}"
-                       value-ref="finaleditstep"/>
+                       value-ref="CENDIE-ADMIN_review"/>
             </util:map>
         </property>
         <property name="actions">
@@ -79,6 +80,22 @@
         <property name="name" value="Editor"/>
         <property name="description"
                   value="The people responsible for this step are able to edit the metadata of incoming submissions, and then accept or reject them."/>
+    </bean>
+
+    <bean class="org.dspace.xmlworkflow.state.Step" name="CENDIE-ADMIN_review">
+        <property name="userSelectionMethod" ref="rejectrole"/>
+            <property name="role">
+            <bean class="org.dspace.xmlworkflow.Role" name="Administrador_CENDIE">
+                <property name="scope" value="#{ T(org.dspace.xmlworkflow.Role.Scope).REPOSITORY}"/>
+                <property name="name" value="CENDIE ADMIN"/>
+                <property name="description" value="Rol asigando para las personas encargadas de gestionar el repositorio, principalmente a partir de la carga."/>
+            </bean>
+        </property>
+        <property name="actions">
+        <list>
+            <ref bean="editaction"/>
+        </list>
+        </property>
     </bean>
 
     <bean name="finaleditstep" class="org.dspace.xmlworkflow.state.Step">
