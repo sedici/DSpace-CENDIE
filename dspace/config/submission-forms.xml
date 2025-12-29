@@ -303,8 +303,8 @@
                     <dc-qualifier>materia</dc-qualifier>
                     <repeatable>true</repeatable>
                     <label>Materia</label>
-                    <input-type>onebox</input-type>
-                    <hint>Ingrese las materias que describen el contenido del recurso</hint>
+                    <input-type value-pairs-name="common_subject_materias">dropdown</input-type>
+                    <hint>Seleccione las materias que describen el contenido del recurso</hint>
                 </field>
             </row>
 
@@ -2000,6 +2000,46 @@
             <pair>
                 <displayed-value>Trabajo de especialización</displayed-value>
                 <stored-value>Trabajo de especialización</stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Materias CENDIE -->
+        <value-pairs value-pairs-name="common_subject_materias" dc-term="subject">
+            <pair>
+                <displayed-value>Artes</displayed-value>
+                <stored-value>Artes</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Ciencias formales</displayed-value>
+                <stored-value>Ciencias formales</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Ciencias naturales</displayed-value>
+                <stored-value>Ciencias naturales</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Ciencias sociales y humanas</displayed-value>
+                <stored-value>Ciencias sociales y humanas</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Cultura</displayed-value>
+                <stored-value>Cultura</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Derechos humanos</displayed-value>
+                <stored-value>Derechos humanos</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Educación</displayed-value>
+                <stored-value>Educación</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Legislación</displayed-value>
+                <stored-value>Legislación</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Tecnologías de la información y comunicación</displayed-value>
+                <stored-value>Tecnologías de la información y comunicación</stored-value>
             </pair>
         </value-pairs>
 
