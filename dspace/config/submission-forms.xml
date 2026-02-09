@@ -500,7 +500,7 @@
                     <label>Nivel educativo</label>
                     <input-type>onebox</input-type>
                     <hint>Ingrese el nivel educativo al que está dirigido el recurso</hint>
-                    <type-bind>Informes</type-bind>
+                    <type-bind>Informes, Objeto de Aprendizaje</type-bind>
                 </field>
             </row>
         </form>
@@ -1786,8 +1786,8 @@
                 <stored-value>Informe sobre políticas</stored-value>
             </pair>
             <pair>
-                <displayed-value>Reporte (técnico?)</displayed-value>
-                <stored-value>Reporte (técnico?)</stored-value>
+                <displayed-value>Reporte técnico</displayed-value>
+                <stored-value>Reporte técnico</stored-value>
             </pair>
         </value-pairs>
         
