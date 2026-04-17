@@ -1,0 +1,13 @@
+## E-mail sent to DSpace users when they register for an account
+##
+## Parameters: ${params[0]} is expanded to a special registration URL
+##
+## See org.dspace.core.Email for information on the format of this file.
+##
+#set($subject = "Repositorio Institucional, DGCyE CENDIE - Alta de usuario")
+Estimado usuario:
+
+Para completar el proceso de registro en el repositorio y activar su cuenta, por favor haga click en el siguiente enlace:
+  ${params[0]}
+ 
+Si necesita ayuda con su cuenta, por favor envíe un e-mail a ${config.get("mail.helpdesk")}.
