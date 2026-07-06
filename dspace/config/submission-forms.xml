@@ -315,8 +315,9 @@
                     <dc-element>subject</dc-element>
                     <repeatable>true</repeatable>
                     <label>Palabras clave</label>
-                    <input-type>onebox</input-type>
+                    <input-type>tag</input-type>
                     <hint>Ingrese palabras clave que describan el contenido del recurso</hint>
+                    <vocabulary>VEA_Hierarchical_Provider</vocabulary>
                 </field>
             </row>
 
