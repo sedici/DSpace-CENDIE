@@ -1743,12 +1743,12 @@
                 <stored-value>Actualizaciones curriculares</stored-value>
             </pair>
             <pair>
-                <displayed-value>Diseños curriculares (de los Niveles)</displayed-value>
-                <stored-value>Diseños curriculares (de los Niveles)</stored-value>
+                <displayed-value>Diseños curriculares</displayed-value>
+                <stored-value>Diseños curriculares</stored-value>
             </pair>
             <pair>
-                <displayed-value>Propuestas curriculares (de las Modalidades)</displayed-value>
-                <stored-value>Propuestas curriculares (de las Modalidades)</stored-value>
+                <displayed-value>Propuestas curriculares</displayed-value>
+                <stored-value>Propuestas curriculares</stored-value>
             </pair>
             <pair>
                 <displayed-value>Secuencias curriculares</displayed-value>
@@ -1907,8 +1907,8 @@
                 <stored-value>Ordenanza Concejo Deliberante</stored-value>
             </pair>
             <pair>
-                <displayed-value>Resolución Ministerial (Resolución)</displayed-value>
-                <stored-value>Resolución Ministerial (Resolución)</stored-value>
+                <displayed-value>Resolución Ministerial</displayed-value>
+                <stored-value>Resolución Ministerial</stored-value>
             </pair>
             <pair>
                 <displayed-value>Resolución Firma Conjunta</displayed-value>
@@ -1947,12 +1947,12 @@
         <!-- Subtipos para Publicación periódica -->
         <value-pairs value-pairs-name="common_subtypes_publicacion_periodica" dc-term="type">
             <pair>
-                <displayed-value>Boletín</displayed-value>
-                <stored-value>Boletín</stored-value>
+                <displayed-value>Boletín digital</displayed-value>
+                <stored-value>Boletín digital</stored-value>
             </pair>
             <pair>
-                <displayed-value>Publicación periódica (número de revista)</displayed-value>
-                <stored-value>Publicación periódica (número de revista)</stored-value>
+                <displayed-value>Número completo</displayed-value>
+                <stored-value>Número completo</stored-value>
             </pair>
         </value-pairs>
         
