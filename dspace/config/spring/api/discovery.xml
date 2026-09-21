@@ -197,10 +197,10 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
-                <ref bean="searchFilterContentInOriginalBundle"/>
+                <!-- <ref bean="searchFilterContentInOriginalBundle"/> -->
                 <!-- <ref bean="searchFilterHasGeospatialMetadata"/> -->
-                <ref bean="searchFilterEntityType"/>
-                <ref bean="searchFilterAccessStatus" />
+                <!-- <ref bean="searchFilterEntityType"/> -->
+                <!-- <ref bean="searchFilterAccessStatus" /> -->
             </list>
         </property>
         <!-- Set TagCloud configuration per discovery configuration -->
@@ -2626,7 +2626,8 @@
         <property name="metadataFields">
             <list>
                 <value>dc.contributor.author</value>
-                <value>dc.creator</value>
+                <value>cendie.contributor.corporate</value>
+                <value>cendie.contributor.gobernador</value>
             </list>
         </property>
         <property name="facetLimit" value="5"/>
