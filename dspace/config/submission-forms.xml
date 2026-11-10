@@ -512,51 +512,13 @@
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
-                    <dc-element>subject</dc-element>
-                    <dc-qualifier></dc-qualifier>
-                    <!-- An input-type of tag MUST be marked as repeatable -->
-                    <repeatable>true</repeatable>
-                    <label>Subject Keywords</label>
-                    <input-type>tag</input-type>
-                    <hint>Enter appropriate subject keywords or phrases.</hint>
-                    <required></required>
-                    <vocabulary>srsc</vocabulary>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>description</dc-element>
-                    <dc-qualifier>abstract</dc-qualifier>
+                    <dc-element>rights</dc-element>
+                    <dc-qualifier>uri</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Abstract</label>
-                    <input-type>textarea</input-type>
-                    <hint>Enter the abstract of the item.</hint>
-                    <required></required>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>description</dc-element>
-                    <dc-qualifier>sponsorship</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Sponsors</label>
-                    <input-type>textarea</input-type>
-                    <hint>Enter the names of any sponsors and/or funding codes in the box.</hint>
-                    <required></required>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>description</dc-element>
-                    <dc-qualifier></dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Description</label>
-                    <input-type>textarea</input-type>
-                    <hint>Enter any other description or comments in this box.</hint>
-                    <required></required>
+                    <label>Licencia Creative Commons</label>
+                    <input-type value-pairs-name="cendie_license_types">dropdown</input-type>
+                    <hint>Seleccione una licencia Creative Commons para este item</hint>
+                    <required>Debe seleccionar una licencia Creative Commons</required>
                 </field>
             </row>
         </form>
@@ -2095,6 +2057,18 @@
             <pair>
                 <displayed-value>No aplica</displayed-value>
                 <stored-value></stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Uso las licencias de openaire pero dejo solamente las utilizadas en CENDIE -->
+        <value-pairs value-pairs-name="cendie_license_types" dc-term="license">
+            <pair>
+                <displayed-value>Attribution, Non-commercial, Share-alike (CC-BY-NC-SA)</displayed-value>
+                <stored-value>https://creativecommons.org/licenses/by-nc-sa/4.0/</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Attribution, Non-commercial, No Derivative Works (CC-BY-NC-ND)</displayed-value>
+                <stored-value>https://creativecommons.org/licenses/by-nc-nd/4.0/</stored-value>
             </pair>
         </value-pairs>
 

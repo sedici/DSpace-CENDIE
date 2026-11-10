@@ -283,7 +283,6 @@
             <!--<step id="identifiers"/>-->
             <!--Step will be to Describe the item. -->
             <step id="traditionalpageone"/>
-            <!-- <step id="traditionalpagetwo"/> -->
 
             <!-- Uncomment this step to allow the user to embargo or access restrict the entire item -->
             <!-- <step id="itemAccessConditions"/> -->
@@ -305,7 +304,8 @@
             <!-- <step id="extractionstep"/> -->
 
             <!-- Uncomment this step to allow the user to select a Creative Commons License -->
-            <step id="cclicense"/>
+            <!-- <step id="cclicense"/> -->
+            <step id="traditionalpagetwo"/>
 
             <!--Step will be to Sign off on the required DSpace License agreement -->
             <!-- <step id="license"/> -->
