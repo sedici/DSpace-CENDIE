@@ -22,7 +22,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -171,6 +170,7 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
 
     @Autowired(required = true)
     private ResearcherProfileService researcherProfileService;
+
     @Autowired(required = true)
     private RequestItemService requestItemService;
 
@@ -478,9 +478,18 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
             return;
         }
 
-        // now add authorization policies from owning item
-        // hmm, not very "multiple-inclusion" friendly
-        authorizeService.inheritPolicies(context, item, bundle);
+        // If this item is archived (not in-progress) and the bundle is restricted
+        // simply clear all policies, otherwise proceed with normal inheritance
+        var restrictedBundles = List.of(configurationService.getArrayProperty(
+            "core.authorization.restricted-bundle",Constants.DEFAULT_RESTRICTED_BUNDLES));
+        if (item.isArchived() && restrictedBundles.contains(bundle.getName())) {
+            resourcePolicyService.removeAllPolicies(context, bundle);
+        } else {
+            // inherit as normal
+            // TODO: does the following comment still apply? misleading?
+            // hmm, not very "multiple-inclusion" friendly
+            authorizeService.inheritPolicies(context, item, bundle, true);
+        }
 
         // Add the bundle to in-memory list
         item.addBundle(bundle);
@@ -1011,6 +1020,11 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
     public void adjustBundleBitstreamPolicies(Context context, Item item, Collection collection,
                                               boolean replaceReadRPWithCollectionRP)
         throws SQLException, AuthorizeException {
+        // Only inherit policies for the new bundle if it is not in
+        // the restricted list. Otherwise, clear all policies (enforce admin only)
+        var restrictedBundles = List.of(configurationService.getArrayProperty(
+            "core.authorization.restricted-bundle",Constants.DEFAULT_RESTRICTED_BUNDLES));
+
         // Bundles should inherit from DEFAULT_ITEM_READ so that if the item is readable, the files
         // can be listed (even if they are themselves not readable as per DEFAULT_BITSTREAM_READ or other
         // policies or embargoes applied
@@ -1038,6 +1052,16 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
         // Remove bundles
         List<Bundle> bunds = item.getBundles();
         for (Bundle mybundle : bunds) {
+            // If the bundle is restricted (e.g. LICENSE, TEXT, SWORD) simply
+            // remove all policies and continue to the next bundle
+            boolean restrictedBundle = restrictedBundles.contains(mybundle.getName());
+            if (restrictedBundle) {
+                authorizeService.removeAllPolicies(context, mybundle);
+                for (Bitstream bitstream : mybundle.getBitstreams()) {
+                    authorizeService.removeAllPolicies(context, bitstream);
+                }
+                continue;
+            }
             // If collection has default READ policies, remove the bundle's READ policies.
             if (removeCurrentReadRPBundle) {
                 authorizeService.removePoliciesActionFilter(context, mybundle, Constants.READ);
@@ -1046,8 +1070,8 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
             // if come from InstallItem: remove all submission/workflow policies
             authorizeService.removeAllPoliciesByDSOAndType(context, mybundle, ResourcePolicy.TYPE_SUBMISSION);
             authorizeService.removeAllPoliciesByDSOAndType(context, mybundle, ResourcePolicy.TYPE_WORKFLOW);
-            addCustomPoliciesNotInPlace(context, mybundle, defaultItemPolicies);
-            addDefaultPoliciesNotInPlace(context, mybundle, defaultCollectionBundlePolicies);
+            authorizeService.addCustomPoliciesNotInPlace(context, mybundle, defaultItemPolicies);
+            authorizeService.addDefaultPoliciesNotInPlace(context, mybundle, defaultCollectionBundlePolicies);
 
             for (Bitstream bitstream : mybundle.getBitstreams()) {
                 // If collection has default READ policies, remove the bundle's READ policies.
@@ -1093,8 +1117,8 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
         throws SQLException, AuthorizeException {
         authorizeService.removeAllPoliciesByDSOAndType(context, bitstream, ResourcePolicy.TYPE_SUBMISSION);
         authorizeService.removeAllPoliciesByDSOAndType(context, bitstream, ResourcePolicy.TYPE_WORKFLOW);
-        addCustomPoliciesNotInPlace(context, bitstream, defaultItemPolicies);
-        addDefaultPoliciesNotInPlace(context, bitstream, defaultCollectionPolicies);
+        authorizeService.addCustomPoliciesNotInPlace(context, bitstream, defaultItemPolicies);
+        authorizeService.addDefaultPoliciesNotInPlace(context, bitstream, defaultCollectionPolicies);
     }
 
     @Override
@@ -1132,7 +1156,7 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
             authorizeService.removeAllPoliciesByDSOAndType(context, item, ResourcePolicy.TYPE_WORKFLOW);
 
             // add default policies only if not already in place
-            addDefaultPoliciesNotInPlace(context, item, defaultCollectionPolicies);
+            authorizeService.addDefaultPoliciesNotInPlace(context, item, defaultCollectionPolicies);
         } finally {
             context.restoreAuthSystemState();
         }
@@ -1141,11 +1165,6 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
     @Override
     public void move(Context context, Item item, Collection from, Collection to)
         throws SQLException, AuthorizeException, IOException {
-
-        // If the two collections are the same, do nothing.
-        if (from.equals(to)) {
-            return;
-        }
 
         // Use the normal move method, and default to not inherit permissions
         this.move(context, item, from, to, false);
@@ -1159,6 +1178,11 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
         // only do write authorization if user is not an editor
         if (!canEdit(context, item)) {
             authorizeService.authorizeAction(context, item, Constants.WRITE);
+        }
+
+        // If the two collections are the same, do nothing.
+        if (from.equals(to)) {
+            return;
         }
 
         // Move the Item from one Collection to the other
@@ -1261,43 +1285,41 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
      *
      * @param context                    DSpace context
      * @param discoverQuery
+     * @param q                          query string
      * @return                           discovery search result objects
-     * @throws SQLException              if something goes wrong
      * @throws SearchServiceException    if search error
      */
-    private DiscoverResult retrieveItemsWithEdit(Context context, DiscoverQuery discoverQuery)
-        throws SQLException, SearchServiceException {
-        EPerson currentUser = context.getCurrentUser();
-        if (!authorizeService.isAdmin(context)) {
-            String userId = currentUser != null ? "e" + currentUser.getID().toString() : "e";
-            Stream<String> groupIds = groupService.allMemberGroupsSet(context, currentUser).stream()
-                .map(group -> "g" + group.getID());
-            String query = Stream.concat(Stream.of(userId), groupIds)
-                .collect(Collectors.joining(" OR ", "edit:(", ")"));
-            discoverQuery.addFilterQueries(query);
+    private DiscoverResult retrieveItemsWithEdit(Context context, DiscoverQuery discoverQuery, String q)
+        throws SearchServiceException {
+        if (StringUtils.isNotBlank(q)) {
+            // Although not all items will have a metadata dc.title, we use it for autocomplete because it is the
+            // most common. Ideally, we should use a field that all indexed items have
+            q = searchService.formatAutoCompleteQuery(q, "dc.title_sort");
+            discoverQuery.setQuery(q);
         }
+        discoverQuery.addRequiredAuthorization(Constants.WRITE);
         return searchService.search(context, discoverQuery);
     }
 
     @Override
-    public List<Item> findItemsWithEdit(Context context, int offset, int limit)
-        throws SQLException, SearchServiceException {
+    public List<Item> findItemsWithEdit(Context context, String q, int offset, int limit)
+        throws SearchServiceException {
         DiscoverQuery discoverQuery = new DiscoverQuery();
         discoverQuery.setDSpaceObjectFilter(IndexableItem.TYPE);
         discoverQuery.setStart(offset);
         discoverQuery.setMaxResults(limit);
-        DiscoverResult resp = retrieveItemsWithEdit(context, discoverQuery);
+        DiscoverResult resp = retrieveItemsWithEdit(context, discoverQuery, q);
         return resp.getIndexableObjects().stream()
             .map(solrItems -> ((IndexableItem) solrItems).getIndexedObject())
             .collect(Collectors.toList());
     }
 
     @Override
-    public int countItemsWithEdit(Context context) throws SQLException, SearchServiceException {
+    public int countItemsWithEdit(Context context, String q) throws SearchServiceException {
         DiscoverQuery discoverQuery = new DiscoverQuery();
         discoverQuery.setMaxResults(0);
         discoverQuery.setDSpaceObjectFilter(IndexableItem.TYPE);
-        DiscoverResult resp = retrieveItemsWithEdit(context, discoverQuery);
+        DiscoverResult resp = retrieveItemsWithEdit(context, discoverQuery, q);
         return (int) resp.getTotalSearchResults();
     }
 
@@ -1322,91 +1344,7 @@ prevent the generation of resource policy entry values with null dspace_object a
 
     */
 
-    /**
-     * Add the default policies, which have not been already added to the given DSpace object
-     *
-     * @param context                   The relevant DSpace Context.
-     * @param dso                       The DSpace Object to add policies to
-     * @param defaultCollectionPolicies list of policies
-     * @throws SQLException       An exception that provides information on a database access error or other errors.
-     * @throws AuthorizeException Exception indicating the current user of the context does not have permission
-     *                            to perform a particular action.
-     */
-    protected void addDefaultPoliciesNotInPlace(Context context, DSpaceObject dso,
-        List<ResourcePolicy> defaultCollectionPolicies) throws SQLException, AuthorizeException {
-        boolean appendMode = configurationService
-                .getBooleanProperty("core.authorization.installitem.inheritance-read.append-mode", false);
-        for (ResourcePolicy defaultPolicy : defaultCollectionPolicies) {
-            if (!authorizeService
-                .isAnIdenticalPolicyAlreadyInPlace(context, dso, defaultPolicy.getGroup(), Constants.READ,
-                    defaultPolicy.getID()) &&
-                   (!appendMode && isNotAlreadyACustomRPOfThisTypeOnDSO(context, dso) ||
-                    appendMode && shouldBeAppended(context, dso, defaultPolicy))) {
-                ResourcePolicy newPolicy = resourcePolicyService.clone(context, defaultPolicy);
-                newPolicy.setdSpaceObject(dso);
-                newPolicy.setAction(Constants.READ);
-                newPolicy.setRpType(ResourcePolicy.TYPE_INHERITED);
-                resourcePolicyService.update(context, newPolicy);
-            }
-        }
-    }
 
-    private void addCustomPoliciesNotInPlace(Context context, DSpaceObject dso, List<ResourcePolicy> customPolicies)
-            throws SQLException, AuthorizeException {
-        boolean customPoliciesAlreadyInPlace = authorizeService
-                .findPoliciesByDSOAndType(context, dso, ResourcePolicy.TYPE_CUSTOM).size() > 0;
-        if (!customPoliciesAlreadyInPlace) {
-            authorizeService.addPolicies(context, customPolicies, dso);
-        }
-    }
-
-    /**
-     * Check whether or not there is already an RP on the given dso, which has actionId={@link Constants.READ} and
-     * resourceTypeId={@link ResourcePolicy.TYPE_CUSTOM}
-     *
-     * @param context DSpace context
-     * @param dso     DSpace object to check for custom read RP
-     * @return True if there is no RP on the item with custom read RP, otherwise false
-     * @throws SQLException If something goes wrong retrieving the RP on the DSO
-     */
-    private boolean isNotAlreadyACustomRPOfThisTypeOnDSO(Context context, DSpaceObject dso) throws SQLException {
-        List<ResourcePolicy> readRPs = resourcePolicyService.find(context, dso, Constants.READ);
-        for (ResourcePolicy readRP : readRPs) {
-            if (readRP.getRpType() != null && readRP.getRpType().equals(ResourcePolicy.TYPE_CUSTOM)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Check if the provided default policy should be appended or not to the final
-     * item. If an item has at least one custom READ policy any anonymous READ
-     * policy with empty start/end date should be skipped
-     *
-     * @param context       DSpace context
-     * @param dso           DSpace object to check for custom read RP
-     * @param defaultPolicy The policy to check
-     * @return
-     * @throws SQLException If something goes wrong retrieving the RP on the DSO
-     */
-    private boolean shouldBeAppended(Context context, DSpaceObject dso, ResourcePolicy defaultPolicy)
-            throws SQLException {
-        boolean hasCustomPolicy = resourcePolicyService.find(context, dso, Constants.READ)
-                                                       .stream()
-                                                       .filter(rp -> (Objects.nonNull(rp.getRpType()) &&
-                                                            Objects.equals(rp.getRpType(), ResourcePolicy.TYPE_CUSTOM)))
-                                                       .findFirst()
-                                                       .isPresent();
-
-        boolean isAnonimousGroup = Objects.nonNull(defaultPolicy.getGroup())
-                && StringUtils.equals(defaultPolicy.getGroup().getName(), Group.ANONYMOUS);
-
-        boolean datesAreNull = Objects.isNull(defaultPolicy.getStartDate())
-                && Objects.isNull(defaultPolicy.getEndDate());
-
-        return !(hasCustomPolicy && isAnonimousGroup && datesAreNull);
-    }
 
     /**
      * Returns an iterator of Items possessing the passed metadata field, or only
