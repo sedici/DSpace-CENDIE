@@ -52,3 +52,5 @@ rebel.xml
 
 ## Ignore jenv configuration
 .java-version
+
+bootstrap-dump.sql
